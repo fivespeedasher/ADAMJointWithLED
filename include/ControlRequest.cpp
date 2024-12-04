@@ -28,11 +28,6 @@ int ControlRequest::controlStatusLight(int color) {
 
 // 关闭状态灯
 int ControlRequest::stopStatusLight() {
-    // adam_1.write_coil(STATUS_LIGHT_YELLOW, false);
-    // adam_1.write_coil(STATUS_LIGHT_BLUE, false);
-    // adam_1.write_coil(STATUS_LIGHT_RED, false);
-    // adam_1.write_coil(STATUS_LIGHT_WHITE, false);
-    // adam_1.write_coil(STATUS_LIGHT_GREEN, false);
     // 多线圈写入
     vector<uint8_t> coils(5, 0);
     adam_1.write_coils(STATUS_LIGHT_YELLOW, 5, coils.data());
@@ -232,7 +227,7 @@ int ControlRequest::controlHorn(int horn) {
     // stopHorn();
     // adam_3.write_coil(horn, true);
     vector<uint8_t> coils(4, 0);
-    coils[horn - 1] = 1;
+    coils[horn - HORN_1] = 1;
     adam_3.write_coils(HORN_1, 4, coils.data());
     return 0;
 }
@@ -252,8 +247,7 @@ vector<bool> ControlRequest::readPositionSensor() {
     positionSensor.assign(adam_4.state_coils.begin(), adam_4.state_coils.end());
 
     // for (int i = 0; i < 16; i++) {
-    //     positionSensor.push_back(adam_4.state_coils[i]);
-    //     // cout << int(adam_4.state_coils[i]) << " "; // 可用于检查输出
+    //     // cout << positionSensor[i] << " "; // 可用于检查输出
     // }
     // cout << endl;
     return positionSensor;
